@@ -27,7 +27,7 @@ const FullCalendar = ({ eventList, handleEventDrop, handleEventClick, handleEven
       initialView="dayGridMonth"
       initialDate={getToday()}
       headerToolbar={{
-        left: "prev,next today",
+        left: "prev today next",
         center: "title",
         right: "dayGridMonth,timeGridWeek,timeGridDay listMonth",
       }}
