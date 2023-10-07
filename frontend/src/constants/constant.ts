@@ -11,8 +11,20 @@ export const CLASS_COLORS = [
     color: "pink",
   },
   {
+    className: "外出(顧客訪問)",
+    color: "green",
+  },
+  {
+    className: "会議(社内)",
+    color: "red",
+  },
+  {
+    className: "会議(社外)",
+    color: "cyan",
+  },
+  {
     className: "その他",
-    color: "olive",
+    color: "yellow",
   },
 ];
 
