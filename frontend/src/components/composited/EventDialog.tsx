@@ -1,4 +1,4 @@
-import React, { Dispatch, useCallback } from "react";
+import React, { Dispatch, useCallback, useState } from "react";
 import { Box, Dialog, DialogContent } from "@mui/material";
 import { CustomIconButton } from "components/base/CustomIconButton";
 import EditForm from "components/composited/EditForm";
@@ -27,6 +27,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
   setAlertInfo,
 }) => {
   const { openConfirmDialog, ConfirmDialog } = useComfirmDialog();
+  const [ eventTitleEmptyError, setEventTitleEmptyError ] = useState(false);
 
   // 編集ボタンを押した時の処理
   const handleEdit = useCallback(() => {
@@ -54,6 +55,10 @@ const EventDialog: React.FC<EventDialogProps> = ({
   // 編集後のイベントを保存する
   const handleSave = useCallback(
     async (refresh: boolean = false) => {
+      if (editingEventInfo.title === "") {
+        setEventTitleEmptyError(true);
+        return;
+      }
       await saveEvent(editingEventInfo); // TODO
       handleCloseDialog(refresh);
       setAlertInfo({
@@ -94,6 +99,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
                 eventInfo={editingEventInfo}
                 handleSave={handleSave}
                 dispatchDialogEventInfo={dispatchDialogEventInfo}
+                eventTitleEmptyError={eventTitleEmptyError}
               />
             ) : (
               <EventDetails eventInfo={editingEventInfo} />

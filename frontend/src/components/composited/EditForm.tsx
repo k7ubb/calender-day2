@@ -22,10 +22,11 @@ type EditFormProps = {
   eventInfo: EventInfoType | NewEventInfoType;
   handleSave: (refresh?: boolean) => Promise<void>;
   dispatchDialogEventInfo: Dispatch<UpdateEditingEvent>;
+  eventTitleEmptyError: boolean;
 };
 
 // イベント編集フォーム
-const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDialogEventInfo }) => {
+const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDialogEventInfo, eventTitleEmptyError }) => {
   // タイトルを変更した時の処理
   const handleChangeEventTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -69,6 +70,8 @@ const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDial
         autoFocus
         value={eventInfo.title ?? ""}
         onChange={handleChangeEventTitle}
+        error={eventTitleEmptyError}
+        helperText={eventTitleEmptyError? "タイトルを入力してください" : ""}
       />
       <CustomDateTimePicker label="開始日時" value={dayjs(eventInfo.start)} onChange={handleChangeStartDateTime} />
       <CustomDateTimePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} />
