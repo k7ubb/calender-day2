@@ -8,9 +8,10 @@ type CustomDateTimePickerProp = {
   label: string;
   value: dayjs.Dayjs;
   onChange: (value: dayjs.Dayjs | null) => void;
+  error?: boolean;
 };
 
-export const CustomDateTimePicker = ({ label, value, onChange }: CustomDateTimePickerProp) => {
+export const CustomDateTimePicker = ({ label, value, onChange, error }: CustomDateTimePickerProp) => {
   return (
     <LocalizationProvider
       dateAdapter={AdapterDayjs}
@@ -26,13 +27,19 @@ export const CustomDateTimePicker = ({ label, value, onChange }: CustomDateTimeP
         value={value}
         onChange={onChange}
         label={label}
-        slotProps={{ textField: { variant: "standard" } }}
+        slotProps={{
+          textField: {
+            variant: "standard",
+            error: error,
+            helperText: error? "終了日時は開始日時より後にしてください" : "",
+          }
+        }}
       />
     </LocalizationProvider>
   );
 };
 
-export const CustomDatePicker = ({ label, value, onChange }: CustomDateTimePickerProp) => {
+export const CustomDatePicker = ({ label, value, onChange, error }: CustomDateTimePickerProp) => {
   return (
     <LocalizationProvider
       dateAdapter={AdapterDayjs}
@@ -47,7 +54,13 @@ export const CustomDatePicker = ({ label, value, onChange }: CustomDateTimePicke
         value={value}
         onChange={onChange}
         label={label}
-        slotProps={{ textField: { variant: "standard" } }}
+        slotProps={{
+          textField: {
+            variant: "standard",
+            error: error,
+            helperText: error? "終了日時は開始日時より後にしてください" : "",
+          }
+        }}
       />
     </LocalizationProvider>
   );

@@ -28,6 +28,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
 }) => {
   const { openConfirmDialog, ConfirmDialog } = useComfirmDialog();
   const [ eventTitleEmptyError, setEventTitleEmptyError ] = useState(false);
+  const [ endDateInvalidError, setEndDateInvalidError ] = useState(false);
 
   // 編集ボタンを押した時の処理
   const handleEdit = useCallback(() => {
@@ -55,9 +56,12 @@ const EventDialog: React.FC<EventDialogProps> = ({
   // 編集後のイベントを保存する
   const handleSave = useCallback(
     async (refresh: boolean = false) => {
-      console.log(editingEventInfo)
       if (editingEventInfo.title === "") {
         setEventTitleEmptyError(true);
+        return;
+      }
+      if (new Date(editingEventInfo.start).getTime() - new Date(editingEventInfo.end).getTime() > 0) {
+        setEndDateInvalidError(true);
         return;
       }
       await saveEvent(editingEventInfo); // TODO
@@ -101,6 +105,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
                 handleSave={handleSave}
                 dispatchDialogEventInfo={dispatchDialogEventInfo}
                 eventTitleEmptyError={eventTitleEmptyError}
+                endDateInvalidError={endDateInvalidError}
               />
             ) : (
               <EventDetails eventInfo={editingEventInfo} />

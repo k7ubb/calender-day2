@@ -24,10 +24,11 @@ type EditFormProps = {
   handleSave: (refresh?: boolean) => Promise<void>;
   dispatchDialogEventInfo: Dispatch<UpdateEditingEvent>;
   eventTitleEmptyError: boolean;
+  endDateInvalidError: boolean;
 };
 
 // イベント編集フォーム
-const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDialogEventInfo, eventTitleEmptyError }) => {
+const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDialogEventInfo, eventTitleEmptyError, endDateInvalidError }) => {
   const [ allDay, setAllDay ] = useState(eventInfo.allDay);
 
   // タイトルを変更した時の処理
@@ -95,7 +96,7 @@ const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDial
         :
         <>
           <CustomDateTimePicker label="開始日時" value={dayjs(eventInfo.start)} onChange={handleChangeStartDateTime} />
-          <CustomDateTimePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} />
+          <CustomDateTimePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} error={endDateInvalidError}/>
         </>
       }
       <FormControl variant="standard" fullWidth>
