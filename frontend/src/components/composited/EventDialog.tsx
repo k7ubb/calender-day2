@@ -55,6 +55,7 @@ const EventDialog: React.FC<EventDialogProps> = ({
   // 編集後のイベントを保存する
   const handleSave = useCallback(
     async (refresh: boolean = false) => {
+      console.log(editingEventInfo)
       if (editingEventInfo.title === "") {
         setEventTitleEmptyError(true);
         return;

@@ -15,6 +15,8 @@ const reducer = (state: EventInfoType | NewEventInfoType, action: UpdateEditingE
   switch (action.type) {
     case "title":
       return { ...state, title: action.value };
+    case "allDay":
+      return { ...state, allDay: action.value };
     case "start":
       try {
         const newStart = action.value ? action.value.toDate() : new Date();

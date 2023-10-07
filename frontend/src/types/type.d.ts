@@ -23,6 +23,7 @@ export type UpdateEditingEvent =
   | { type: "title"; value: string }
   | { type: "start"; value: Dayjs }
   | { type: "end"; value: Dayjs }
+  | { type: "allDay"; value: boolean }
   | { type: "className"; value: string }
   | { type: "all"; value: EventInfoType }
   | { type: "init" };

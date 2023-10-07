@@ -1,4 +1,4 @@
-import React, { Dispatch, useCallback } from "react";
+import React, { Dispatch, useCallback, useState } from "react";
 import {
   Box,
   Button,
@@ -13,7 +13,8 @@ import {
   Theme,
 } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
-import { CustomDateTimePicker } from "components/base/CustomDatePicker";
+import { CustomAllDaySwitch } from "components/base/CustomAllDaySwitch";
+import { CustomDateTimePicker, CustomDatePicker } from "components/base/CustomDatePicker";
 import { CustomTextField } from "components/base/CustomTextField";
 import { EventInfoType, NewEventInfoType, UpdateEditingEvent } from "types/type";
 import { CLASS_COLORS } from "constants/constant";
@@ -27,10 +28,21 @@ type EditFormProps = {
 
 // イベント編集フォーム
 const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDialogEventInfo, eventTitleEmptyError }) => {
+  const [ allDay, setAllDay ] = useState(eventInfo.allDay);
+
   // タイトルを変更した時の処理
   const handleChangeEventTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       dispatchDialogEventInfo({ type: "title", value: e.target.value });
+    },
+    [dispatchDialogEventInfo]
+  );
+
+  // 終日を変更した時の処理
+  const handleChangeAllDay = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      dispatchDialogEventInfo({ type: "allDay", value: checked });
+      setAllDay(checked);
     },
     [dispatchDialogEventInfo]
   );
@@ -73,9 +85,19 @@ const EditForm: React.FC<EditFormProps> = ({ eventInfo, handleSave, dispatchDial
         error={eventTitleEmptyError}
         helperText={eventTitleEmptyError? "タイトルを入力してください" : ""}
       />
-      <CustomDateTimePicker label="開始日時" value={dayjs(eventInfo.start)} onChange={handleChangeStartDateTime} />
-      <CustomDateTimePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} />
-
+      
+      <CustomAllDaySwitch label="終日" checked={eventInfo.allDay} onChange={handleChangeAllDay}/>
+      { allDay ? 
+        <>
+          <CustomDatePicker label="開始日時" value={dayjs(eventInfo.start)} onChange={handleChangeStartDateTime} />
+          <CustomDatePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} />
+        </>
+        :
+        <>
+          <CustomDateTimePicker label="開始日時" value={dayjs(eventInfo.start)} onChange={handleChangeStartDateTime} />
+          <CustomDateTimePicker label="終了日時" value={dayjs(eventInfo.end)} onChange={handleChangeEndDateTime} />
+        </>
+      }
       <FormControl variant="standard" fullWidth>
         <InputLabel>ラベル</InputLabel>
         <ClassNameSelect value={eventInfo.className ?? ""} onChange={handleChangeClassName} />
@@ -114,3 +136,4 @@ const ClassNameSelect: React.FC<SelectProps<string>> = ({ ...props }) => {
 };
 
 export default EditForm;
+
